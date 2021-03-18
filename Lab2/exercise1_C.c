@@ -1,6 +1,6 @@
 // Microprocessors Laboratory - Flow Y [7th Semester]
-// Abatzi Nafsika - 031 17 198 - nafsika.abatzi@gmail.com
-// Dimos Dimitris - 031 17 165 - dimitris.dimos647@gmail.com
+// Abatzi Nafsika - nafsika.abatzi@gmail.com
+// Dimos Dimitris - dimitris.dimos647@gmail.com
 // Lab Exercise Set 2 - Exercise 1 - C
 
 #include <avr/io.h>
