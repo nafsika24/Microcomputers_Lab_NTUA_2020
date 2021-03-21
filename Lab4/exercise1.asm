@@ -13,7 +13,7 @@
 	.org 0x0
 	rjmp MAIN
 	.org 0x10
-    rjmp ISR_TIMER1_OVF  ;routine for overflow interrupt if timer1
+        rjmp ISR_TIMER1_OVF  		 ;routine for overflow interrupt if timer1
 	.org 0x1c			 ;routine for ADC interupt
 	rjmp ADC_SERVICE_ROUTINE
 
