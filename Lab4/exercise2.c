@@ -50,7 +50,7 @@ ISR(ADC_vect) {	// check the CO level
 		//TCNT1L = 0xf3;		//Timer1 overflows in 100 msec
 	}
 
-	 if(205<ADC & ADC<=298  ){ // Cx = [71,105] ppm
+	 if(205<ADC & ADC<=298  ){ 		// Cx = [71,105] ppm
 		 level = 0xc;
 		 flag_ = 1;
 		 //TCNT1H = 0xfc;		
@@ -58,7 +58,7 @@ ISR(ADC_vect) {	// check the CO level
 		 	 
 	 }
 	 
-	if(298<ADC & ADC<=614){  // Cx = [105, ] ppm
+	if(298<ADC & ADC<=614){ 		 // Cx = [105, ] ppm
 		level = 0x30;
 		flag_ = 1;
 		//TCNT1H = 0xfc;		
@@ -68,7 +68,7 @@ ISR(ADC_vect) {	// check the CO level
 	if(!flag_)
 		level = 0x00;
 		TCNT1H = 0xfc;		
-		TCNT1L = 0xf3;		//Timer1 overflows in 100 msec
+		TCNT1L = 0xf3;			//Timer1 overflows in 100 msec
 	}
 
 int main(void) {
@@ -76,7 +76,7 @@ int main(void) {
 		DDRB = 0xFF;
 		DDRC = 0xF0;
 	
-		TIMSK = (1 << TOIE1);							//Timer1 ,interrupt enable
+		TIMSK = (1 << TOIE1);					//Timer1 ,interrupt enable
 		TCCR1B =(1<<CS12) | (0<<CS11) | (1<<CS10);		//frequency of Timer1 8MHz/1024
 		
 		sei();	
@@ -85,17 +85,17 @@ while(1){
 	
 	
 flag = keypad();
-if(flag){									// if any password was given
+if(flag){								// if any password was given
 	if(flag!=PASSWORD){						// and it was wrong
-		for(int i=0; i<4; i++){				// PB7 blinks for 4 secs
-		if(level==0x01 | level==0x02){		// and level of CO is also shown at the leds
+		for(int i=0; i<4; i++){					// PB7 blinks for 4 secs
+		if(level==0x01 | level==0x02){				// and level of CO is also shown at the leds
 			PORTB = level+0x80;
 			_delay_ms(500);					// safe zones
 			PORTB = level;
 			_delay_ms(500);		
 		}
 		
-		if (level==0xc | level==0x30){		// alarm zones
+		if (level==0xc | level==0x30){				// alarm zones
 			
 			PORTB = level+0x80;
 			_delay_ms(500);
@@ -106,7 +106,7 @@ if(flag){									// if any password was given
 		}
 	}
 	
-	if(flag==PASSWORD){						// if the password was correct PB7 is ON for 4 secs and the level of CO is also shown
+	if(flag==PASSWORD){				// if the password was correct PB7 is ON for 4 secs and the level of CO is also shown
 		
 		if (level==0xc | level==0x30){		// if the alarm was ON, closes for 4 secs
 			PORTB = 0x80;
@@ -125,7 +125,7 @@ if(flag){									// if any password was given
 				{
 					PORTB = 0x80;
 					_delay_ms(500);
-					//m++;					// show it
+					//m++;				// show it
 					PORTB = level+0x80;
 					_delay_ms(500);
 					m++;
@@ -183,10 +183,10 @@ unsigned int keypad(void){
 			do {	// wait until a button is pressed
 				second = scan_keypad_rising_edge_sim();
 			}while(!second);
-			second = keypad_to_ascii_sim(second) - 0x30; // transform into the right form
+			second = keypad_to_ascii_sim(second) - 0x30; 	// transform into the right form
 			
 			given_combo = first*10 + second;
-			scan_keypad_rising_edge_sim();	// no actual need - bug fix
+			scan_keypad_rising_edge_sim();			// no actual need - bug fix
 		return given_combo;
 			}
 }
