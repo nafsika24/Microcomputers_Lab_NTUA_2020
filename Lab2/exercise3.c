@@ -6,7 +6,6 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
-
 unsigned char Led,check,b,c,counter,cnt,a,i;
 
 //interrupt [EXT_INT0]
