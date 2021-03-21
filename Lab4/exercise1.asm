@@ -346,19 +346,19 @@ ADC_SERVICE_ROUTINE:
 					push r17
 					clr temp
 					clr temp2
-					clr r16				; clear input
+					clr r16			; clear input
 					clr r17
 	
-					in r16,ADCL			; read ADC input
+					in r16,ADCL		; read ADC input
 					in r17,ADCH	
 
 					mov temp,r16		; save VL temporary
 					mov temp2,r17		; save VH temporary
 										
 					cpi r17,0x00		; only if VH=0 we may be at zones 1 and 2 (safe zones)
-					brne GAS			; if VH>0 we check for higher levels (alarm zone)
+					brne GAS		; if VH>0 we check for higher levels (alarm zone)
 					subi r16,0x15	
-					brsh cont			; if VL>=21 continue checking, else the value is invalid-> check again
+					brsh cont		; if VL>=21 continue checking, else the value is invalid-> check again
 					
 					pop r17				
 					pop r16	
@@ -371,7 +371,7 @@ ADC_SERVICE_ROUTINE:
 					out TCNT1L ,temp
 					reti
 
-		cont:		mov r16,temp		; reset VL
+		cont:		mov r16,temp			; reset VL
 					cpi r16,0x72		; if VL < 114 (VH <= 113)
 					brlo PB0_set		; Cx:[0-35], PB0 is ON (safe zone)
 
@@ -385,8 +385,8 @@ ADC_SERVICE_ROUTINE:
 				   pop r16
 				   pop temp
 				   out SREG,temp
-				   ldi temp,0xfc			; initiallize TCNT1
-				   out TCNT1H ,temp			; for overflow after 0.1 sec
+				   ldi temp,0xfc		; initiallize TCNT1
+				   out TCNT1H ,temp		; for overflow after 0.1 sec
 				   ldi temp ,0xf3
 				   out TCNT1L ,temp
 				   reti
@@ -397,8 +397,8 @@ ADC_SERVICE_ROUTINE:
 					pop temp
 					out SREG,temp
 					out SREG,temp
-					ldi temp,0xfc			; initiallize TCNT1
-					out TCNT1H ,temp		; for overflow after 0.1 sec
+					ldi temp,0xfc		; initiallize TCNT1
+					out TCNT1H ,temp	; for overflow after 0.1 sec
 					ldi temp ,0xf3
 					out TCNT1L ,temp
 					reti
@@ -430,7 +430,7 @@ PB2_PB3_set:ldi flag,0xc
 			out TCNT1L ,temp
 			reti
 
-level_4_check:mov r17,temp2				; restore VH
+level_4_check:mov r17,temp2					; restore VH
 			andi r17,0x03
 			subi r17,0x03				; if VH>=3, ADC>614 (max for 3 V) -> show nothing
 			brsh nothing
@@ -506,36 +506,36 @@ MAIN:
 
 ;------- CHECK KEYBOARD ---------
 START:		
-		clr counter							; clear counter
+		clr counter					; clear counter
 		clr flagk	
 		mov flag,temp1
 		
-digit1:	rcall scan_keypad_rising_edge_sim	; check for pressed bottons
+digit1:	rcall scan_keypad_rising_edge_sim			; check for pressed bottons
 		rcall keypad_to_ascii_sim			; transform into ascii form
 		cpi pressed, 0x00					
-		brne contt							; loop if no button is pressed
+		brne contt					; loop if no button is pressed
 		rjmp main1
 contt:	subi pressed, 0x30					; convert from ascii to right form
-		mov first, pressed					; save first input digit,
-											; before reading the second
+		mov first, pressed				; save first input digit,
+								; before reading the second
 
 
-digit2:	rcall scan_keypad_rising_edge_sim	; check for pressed bottons
+digit2:	rcall scan_keypad_rising_edge_sim			; check for pressed bottons
 		rcall keypad_to_ascii_sim			; transform into ascii form
 		cpi pressed, 0x00					
-		breq digit2							; loop if no button is pressed
+		breq digit2					; loop if no button is pressed
 
-		subi pressed, 0x30					; convert from ascii to right form
-		mov second, pressed					; save second input digit
+		subi pressed, 0x30				; convert from ascii to right form
+		mov second, pressed				; save second input digit
 
 
 		; check if input matches password
 		ldi temp, 0x0a			
 		mul first, temp	
 		mov first, r0
-		add first, second 					; given combo = first*10 + second
-		cpi first, password		
-		brne wrong_pass						; check if given combo matches the password
+		add first, second 				; given combo = first*10 + second
+		cpi first, password	
+		brne wrong_pass					; check if given combo matches the password
 
 
 		; correct given combo
@@ -550,13 +550,13 @@ wrong_pass:	ldi flagk,0x01
 ;----------- CHECK LEVELS OF CO ------------
 
 
-main1:		mov save,flagk							; save keyboard status 
-			mov temp1,flag							; save CO level status
+main1:		mov save,flagk						; save keyboard status 
+			mov temp1,flag					; save CO level status
 			cpi flag,0x00
 			breq no_output
 			
-			cpi flagk,0x00							; check if any password was given
-			breq no_keypad							; if not just continue
+			cpi flagk,0x00					; check if any password was given
+			breq no_keypad					; if not just continue
 			rjmp combo_given
 			
 ;-------- ADC > 614 -----------
@@ -570,14 +570,14 @@ no_output:	clr r24
 			
 ;----------------- NO PASSWORD WAS GIVEN ---------------------------			
 no_keypad:	mov flag,temp1
-			cpi flag,0x03							; check if we are at safe zone or not 
+			cpi flag,0x03					; check if we are at safe zone or not 
 			brlo safe											
 			rjmp ALARM				
 
 ;---------- SAFE ZONE ----------	
 			
-safe:		mov flag,temp1							; restore level of CO
-			out PORTB,flag							; level -> leds
+safe:		mov flag,temp1						; restore level of CO
+			out PORTB,flag					; level -> leds
 			cpi clear,0x01
 			breq START
 			clr r24
@@ -655,14 +655,14 @@ ALARM1:		mov flag,temp1					; loop for blink
 ;----------------- PASSWORD WAS GIVEN ------------------	
 			
 combo_given: mov flagk,save
-			 cpi flagk,0x02						; was the password correct?
+			 cpi flagk,0x02				; was the password correct?
 			 breq correct_password_before		; if yes got at correct_password
 			
 wrong_password: push counter					; if not PB7 starts blinking 
-				ldi counter,0x04				; for 4 secs
+				ldi counter,0x04		; for 4 secs
 
 wrong_passwrd1:	 mov temp1,flag					; check level of CO within these 4 secs
-				 cpi flag,0x01					; and show the level at the leds
+				 cpi flag,0x01			; and show the level at the leds
 				 breq save_zone_password
 				 mov flag,temp1
 				 cpi flag,0x02
@@ -767,8 +767,8 @@ save_zone_password:
 
 			
 				
-bai: pop counter
-	 rjmp START			
+bai:    pop counter
+ 	rjmp START			
 
 ;---------------- correct_password --------------------
 	correct_password: mov temp1,flag
