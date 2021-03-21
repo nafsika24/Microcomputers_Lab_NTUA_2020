@@ -4,7 +4,11 @@
 // Lab Exercise Set 2 - Exercise 3
 
 #include <avr/io.h>
-#include <avr/interrupt.h>unsigned char Led,check,b,c,counter,cnt,a,i;
+#include <avr/interrupt.h>
+
+
+unsigned char Led,check,b,c,counter,cnt,a,i;
+
 //interrupt [EXT_INT0]
 ISR(INT0_vect)  	// External Interrupt 0 service routine
 	{
@@ -37,4 +41,17 @@ ISR(INT0_vect)  	// External Interrupt 0 service routine
 		PORTC = cnt;
 		}	
 			
-}int main(void){	DDRC = 0xff;	//PORTC->output	DDRB = 0x00;	//PORTB ->input	DDRA = 0x00;	//PORTA ->input		MCUCR = (1<<ISC01 | 1<< ISC00);	//enable INT0 interrupt-choose level of interrupt enable	GICR = (1<<INT0);				//INT0 mode: στην ακμή πτώσης του ρολογιού	sei	();	//enable all interrupts	while(1);			}
+}
+
+int main(void){
+	DDRC = 0xff;	//PORTC->output
+	DDRB = 0x00;	//PORTB ->input
+	DDRA = 0x00;	//PORTA ->input
+	
+	MCUCR = (1<<ISC01 | 1<< ISC00);	//enable INT0 interrupt-choose level of interrupt enable
+	GICR = (1<<INT0);				//INT0 mode: στην ακμή πτώσης του ρολογιού
+	sei	();	//enable all interrupts
+	while(1);
+			
+}
+
