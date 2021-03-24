@@ -1,4 +1,4 @@
-# Microcomputers_Lab_NTUA_2020
+# Microcomputers Laboratory NTUA 2020
 This repository contains solutions for the projects at Microcomputers Lab (ECE NTUA 2020-2021).\
 It includes:
 * Intel 8085 exercises in assembly.
