@@ -5,4 +5,4 @@ It includes:
 * Atmega16 AVR exercises in assembly and C.
 * RISC-V exercises in assembly and C.\
 
-Collaborator Dimitris Dimos (d-dimos)
+Collaborator [Dimitrios Dimos  ](https://github.com/d-dimos)
